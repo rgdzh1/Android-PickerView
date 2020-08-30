@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -53,8 +54,7 @@ public class BasePickerView {
 
     protected void initViews() {
 
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         if (isDialog()) {
@@ -65,8 +65,8 @@ public class BasePickerView {
             //这个是真正要加载选择器的父布局
             contentContainer = (ViewGroup) dialogView.findViewById(R.id.content_container);
             //设置对话框 默认左右间距屏幕30
-            params.leftMargin = 30;
-            params.rightMargin = 30;
+//            params.leftMargin = 30;
+//            params.rightMargin = 30;
             contentContainer.setLayoutParams(params);
             //创建对话框
             createDialog();
@@ -315,11 +315,17 @@ public class BasePickerView {
             mDialog.setCancelable(mPickerOptions.cancelable);//不能点外面取消,也不能点back取消
             mDialog.setContentView(dialogView);
 
+
             Window dialogWindow = mDialog.getWindow();
             if (dialogWindow != null) {
-                dialogWindow.setWindowAnimations(R.style.picker_view_scale_anim);
+                dialogWindow.setWindowAnimations(R.style.picker_view_slide_anim);
                 dialogWindow.setGravity(Gravity.CENTER);//可以改成Bottom
             }
+            // 手动设置Dialog样式的PickerView在屏幕底部,并且宽度为屏幕宽度,这样可以PickerView可以自动接管返回按键事件
+            WindowManager.LayoutParams attributes = dialogWindow.getAttributes();
+            attributes.width = WindowManager.LayoutParams.MATCH_PARENT;
+            attributes.gravity = Gravity.BOTTOM;
+            dialogWindow.setAttributes(attributes);
 
             mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override

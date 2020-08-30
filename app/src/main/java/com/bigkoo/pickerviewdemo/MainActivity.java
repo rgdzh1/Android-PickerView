@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 })
                 .isDialog(true)
-                .setOutSideCancelable(false)
+//                .setOutSideCancelable(false)
                 .build();
 
         pvCustomOptions.setPicker(cardItem);//添加数据

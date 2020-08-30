@@ -604,7 +604,7 @@ public class WheelView extends View {
      * @param item data resource
      * @return 对应显示的字符串
      */
-    private String getContentText(Object item) {
+    protected String getContentText(Object item) {
         if (item == null) {
             return "";
         } else if (item instanceof IPickerViewData) {
